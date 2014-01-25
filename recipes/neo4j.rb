@@ -8,7 +8,10 @@ unless brew_installed? "neo4j"
 
   template "#{node['sprout']['home']}/Library/LaunchAgents/homebrew.mxcl.neo4j.plist" do
     source "neo4j.plist.erb"
-    variables ({ :neo4j_prefix => `brew --prefix neo4j`.chomp })
+    # This path will break when neo4j updates it's version, but not sure what
+    # else to do, because this gets evald by chef before homebrew is installed,
+    # so we can't ask homebrew what the path is.
+    variables ({ :neo4j_prefix => '/usr/local/Cellar/neo4j/2.0.0/' })
     user node['current_user']
   end
 
